@@ -1,0 +1,71 @@
+#Skript-Coding
+##########################
+#           by           #
+#      FloCrafterHD      #
+# flocrafterhd@proton.me #
+##########################
+variables:
+   {Wartung.get} = false
+   
+command /wartung [<text>]:
+permission: system.wartung.use
+permission message: &cKeine Rechte...
+trigger:
+   if arg 1 is_set:
+      if arg 1 is "on":
+         if {Wartung.get} is not true:
+            set {Wartung.get} to true
+            send "&cDu hast den Wartungsmodus &aaktiviert&c."
+            loop all players:
+               if loop-player doesn`t have permission "system.wartung.join":
+                  kick player due to "&4&lWartungsarbeiten sind Aktiv"
+         else:
+            send "&cDer Wartungsmodus ist bereits aktiviert."
+      if arg 1 is "off":
+         if {Wartung.get} is not false:
+            set {Wartung.get} to false
+            send "&cDu hast den Wartungsmodus &4deaktiviert&c."
+         else:
+            send "&cDer Wartungsmodus ist nicht aktiviert."
+       if arg 1 is "status":
+         if {Wartung.get} is true:
+            send "Der Wartungsmodus ist &aaktiviert"
+         if {Wartung.get} is false:
+            send "Der Wartungsmodus ist &4deaktiviert"
+       if arg 1 is "info":
+         send "&cDieses Wartungs System ist von FloCrafterHD!"
+         if arg 1 is not "on" or "off" or "status"
+            send "&cNutze: /wartung (on/off/status)"
+      else:
+         send "&cNutze: /wartung (on/off/status)"
+         stop
+
+on join:
+   if {Wartung.get} is true:
+      if player doesn`t have permission "system.wartung.join":
+         kick player due to "&4&lWartungsarbeiten sind Aktiv"
+
+command /wartunghelp:
+    permission: system.wartung.help
+    trigger:
+        send "§f==========================================================================§f"
+        send ""
+        send "§l§a                        §c§lCommands§c §f- Hilfe§l:§f"
+        send ""
+        send "§l§c/wartung (on/off/status)§a§l §f- §oAllgemeine Befehle"
+        send "§l§c/wartung (add/remove/list)§a§l §f- §oComming soon"
+        send "§l§c/wartung info§a§l §f- §oZeigt dir Informationen über das Add-on an"
+        send ""
+        send "§f==========================================================================§f"
+        send ""
+        send "§l§a                        §c§lPermissions§c §f- Hilfe§l:§f"
+        send ""
+        send "§l§cCommand [wartung (on/off/status/info)] nutzen: {system.wartung.use}"
+        send "§l§cCommand [wartung (add/remove/list)] nutzen: {comming soon}"
+        send "§l§cServer wärend denn Wartungszeiten beitretten: {system.wartung.join}"
+        send "§l§cCommand /wartunghelp nutzen: {system.wartung.help}"
+        send ""
+        send ""
+        send "§l§aProject by FloCrafterHD"
+        send "§f==========================================================================§f"
+
